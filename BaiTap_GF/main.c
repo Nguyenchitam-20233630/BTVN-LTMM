@@ -25,7 +25,12 @@ int main(void) {
     int a = 0x5;
     int b = 0xB;
 
-    printf("GF(2^4): 0x%X\n", nhan_gf2_4(a, b));
+    int ket_qua = nhan_gf2_4(a, b);
+
+    printf("Bat dau chuong trinh GF(2^4)\n");
+    printf("a = 0x%X\n", a);
+    printf("b = 0x%X\n", b);
+    printf("Ket qua: 0x%X\n", ket_qua);
 
     return 0;
 }
