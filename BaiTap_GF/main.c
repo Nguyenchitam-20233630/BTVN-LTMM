@@ -21,6 +21,7 @@ int nhan_gf2_4(int a, int b) {
     return ket_qua;
 }
 
+ 
  // Nhan hai da thuc trong GF(2^8)
 int nhan_gf2_8(int a, int b) {
     int ket_qua = 0;
@@ -33,11 +34,14 @@ int nhan_gf2_8(int a, int b) {
         b >>= 1;
         a <<= 1;
 
-       
+        if (a >= 256) {
+            a ^= 0x11B;
+        }
     }
 
     return ket_qua;
 }
+
 
 int main(void) {
     int a = 0x5;
