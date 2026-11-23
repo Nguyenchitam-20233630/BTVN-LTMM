@@ -38,6 +38,12 @@ uint8_t nhan_gf2_8(int a, int b)
 
     return (uint8_t)ket_qua;
 }
+void sub_bytes(uint8_t state[16])
+{
+    for (int i = 0; i < 16; i++) {
+        state[i] = sbox[state[i]];
+    }
+}
 int main(void){
     uint8_t p[16] = {0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x11, 0x11};
     uint8_t k[16] = {0};
