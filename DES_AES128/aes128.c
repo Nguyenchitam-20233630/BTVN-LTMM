@@ -84,6 +84,12 @@ void shift_rows(uint8_t state[16])
         }
     }
 }
+void add_round_key(uint8_t state[16], const uint8_t key[16])
+{
+    for (int i = 0; i < 16; i++) {
+        state[i] = state[i] ^ key[i];
+    }
+}
 int main(void){
     uint8_t p[16] = {0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x11, 0x11};
     uint8_t k[16] = {0};
