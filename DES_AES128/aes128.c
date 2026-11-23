@@ -135,6 +135,27 @@ for (int r = 0; r < 4; r++) {
 printf("63 nhan 02 = %02X\n", nhan_gf2_8(0x63, 0x02));
 printf("82 nhan 02 = %02X\n", nhan_gf2_8(0x82, 0x02));
 printf("63 nhan 03 = %02X\n", nhan_gf2_8(0x63, 0x03));
+uint8_t word[4];
+
+word[0] = k[13];
+word[1] = k[14];
+word[2] = k[15];
+word[3] = k[12];
+
+printf("Word sau RotWord: ");
+for (int i = 0; i < 4; i++) {
+    printf("%02X ", word[i]);
+}
+printf("\n");
+for (int i = 0; i < 4; i++) {
+    word[i] = sbox[word[i]];
+}
+
+printf("Word sau SubWord: ");
+for (int i = 0; i < 4; i++) {
+    printf("%02X ", word[i]);
+}
+printf("\n");
     return 0;
     
 }

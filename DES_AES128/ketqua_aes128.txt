@@ -28,3 +28,5 @@ BA 82 63 63
 63 nhan 02 = C6
 82 nhan 02 = 1F
 63 nhan 03 = A5
+Word sau RotWord: 00 00 00 00 
+Word sau SubWord: 63 63 63 63 
