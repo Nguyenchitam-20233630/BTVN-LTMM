@@ -163,6 +163,20 @@ for (int i = 0; i < 4; i++) {
     printf("%02X ", word[i]);
 }
 printf("\n");
+uint8_t key1[16];
+
+for (int i = 0; i < 4; i++) {
+    key1[i] = k[i] ^ word[i];
+}
+
+for (int i = 4; i < 16; i++) {
+    key1[i] = k[i] ^ key1[i - 4];
+}
+printf("Khoa vong 1: ");
+for (int i = 0; i < 16; i++) {
+    printf("%02X", key1[i]);
+}
+printf("\n");
     return 0;
     
 }
