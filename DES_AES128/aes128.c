@@ -125,169 +125,83 @@ void add_round_key(uint8_t state[16], const uint8_t key[16])
         state[i] = state[i] ^ key[i];
     }
 }
+void in_state(const uint8_t state[16])
+{
+    for (int r = 0; r < 4; r++) {
+        for (int c = 0; c < 4; c++) {
+            printf("%02X ", state[4 * c + r]);
+        }
+        printf("\n");
+    }
+}
 int main(void){
     uint8_t p[16] = {0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x11, 0x11};
     uint8_t k[16] = {0};
+    uint8_t state[16];
+    uint8_t keys[11][16];
+
     printf("Ban ro p: ");
-    for(int i = 0; i < 16; i ++){
+    for (int i = 0; i < 16; i++) {
         printf("%02X", p[i]);
     }
+
     printf("\nKhoa k: ");
-    for(int i = 0; i < 16; i ++){
+    for (int i = 0; i < 16; i++) {
         printf("%02X", k[i]);
     }
     printf("\n");
 
-    uint8_t state[16];
+    sinh_khoa(k, keys);
 
-for (int i = 0; i < 16; i++) {
-    state[i] = p[i];
-}
+    for (int round = 0; round <= 10; round++) {
+        printf("Khoa vong %d: ", round);
 
-printf("State ban dau:\n");
+        for (int i = 0; i < 16; i++) {
+            printf("%02X", keys[round][i]);
+        }
 
-for (int r = 0; r < 4; r++) {
-    for (int c = 0; c < 4; c++) {
-        printf("%02X ", state[4 * c + r]);
+        printf("\n");
     }
-    printf("\n");
-}
-for (int i = 0; i < 16; i++) {
-    state[i] = state[i] ^ k[i];
-}
-printf("State sau AddRoundKey ban dau:\n");
-
-for (int r = 0; r < 4; r++) {
-    for (int c = 0; c < 4; c++) {
-        printf("%02X ", state[4 * c + r]);
-    }
-    printf("\n");
-}
-for (int i = 0; i < 16; i++) {
-    state[i] = sbox[state[i]];
-}
-printf("State sau SubBytes vong 1:\n");
-
-for (int r = 0; r < 4; r++) {
-    for (int c = 0; c < 4; c++) {
-        printf("%02X ", state[4 * c + r]);
-    }
-    printf("\n");
-}
-uint8_t temp[16];
-
-for (int i = 0; i < 16; i++) {
-    temp[i] = state[i];
-}
-
-for (int r = 0; r < 4; r++) {
-    for (int c = 0; c < 4; c++) {
-        state[4 * c + r] = temp[4 * ((c + r) % 4) + r];
-    }
-}
-printf("State sau ShiftRows vong 1:\n");
-
-for (int r = 0; r < 4; r++) {
-    for (int c = 0; c < 4; c++) {
-        printf("%02X ", state[4 * c + r]);
-    }
-    printf("\n");
-}
-for (int c = 0; c < 4; c++) {
-    uint8_t a0 = state[4 * c];
-    uint8_t a1 = state[4 * c + 1];
-    uint8_t a2 = state[4 * c + 2];
-    uint8_t a3 = state[4 * c + 3];
-
-    state[4 * c] =
-        nhan_gf2_8(a0, 0x02) ^ nhan_gf2_8(a1, 0x03) ^ a2 ^ a3;
-
-    state[4 * c + 1] =
-        a0 ^ nhan_gf2_8(a1, 0x02) ^ nhan_gf2_8(a2, 0x03) ^ a3;
-
-    state[4 * c + 2] =
-        a0 ^ a1 ^ nhan_gf2_8(a2, 0x02) ^ nhan_gf2_8(a3, 0x03);
-
-    state[4 * c + 3] =
-        nhan_gf2_8(a0, 0x03) ^ a1 ^ a2 ^ nhan_gf2_8(a3, 0x02);
-}
-printf("State sau MixColumns vong 1:\n");
-
-for (int r = 0; r < 4; r++) {
-    for (int c = 0; c < 4; c++) {
-        printf("%02X ", state[4 * c + r]);
-    }
-    printf("\n");
-}
-printf("63 nhan 02 = %02X\n", nhan_gf2_8(0x63, 0x02));
-printf("82 nhan 02 = %02X\n", nhan_gf2_8(0x82, 0x02));
-printf("63 nhan 03 = %02X\n", nhan_gf2_8(0x63, 0x03));
-uint8_t word[4];
-
-word[0] = k[13];
-word[1] = k[14];
-word[2] = k[15];
-word[3] = k[12];
-
-printf("Word sau RotWord: ");
-for (int i = 0; i < 4; i++) {
-    printf("%02X ", word[i]);
-}
-printf("\n");
-for (int i = 0; i < 4; i++) {
-    word[i] = sbox[word[i]];
-}
-
-printf("Word sau SubWord: ");
-for (int i = 0; i < 4; i++) {
-    printf("%02X ", word[i]);
-}
-printf("\n");
-word[0] = word[0] ^ 0x01;
-
-printf("Word sau XOR Rcon vong 1: ");
-for (int i = 0; i < 4; i++) {
-    printf("%02X ", word[i]);
-}
-printf("\n");
-uint8_t key1[16];
-
-for (int i = 0; i < 4; i++) {
-    key1[i] = k[i] ^ word[i];
-}
-
-for (int i = 4; i < 16; i++) {
-    key1[i] = k[i] ^ key1[i - 4];
-}
-printf("Khoa vong 1: ");
-for (int i = 0; i < 16; i++) {
-    printf("%02X", key1[i]);
-}
-printf("\n");
-for (int i = 0; i < 16; i++) {
-    state[i] = state[i] ^ key1[i];
-}
-printf("State sau AddRoundKey vong 1:\n");
-
-for (int r = 0; r < 4; r++) {
-    for (int c = 0; c < 4; c++) {
-        printf("%02X ", state[4 * c + r]);
-    }
-    printf("\n");
-}
-uint8_t keys[11][16];
-
-sinh_khoa(k, keys);
-
-for (int round = 0; round <= 10; round++) {
-    printf("Khoa vong %d: ", round);
 
     for (int i = 0; i < 16; i++) {
-        printf("%02X", keys[round][i]);
+        state[i] = p[i];
     }
 
+    printf("\nState ban dau:\n");
+    in_state(state);
+
+    add_round_key(state, keys[0]);
+
+    printf("State sau AddRoundKey ban dau:\n");
+    in_state(state);
+
+    for (int round = 1; round <= 10; round++) {
+        printf("\n===== VONG %d =====\n", round);
+
+        sub_bytes(state);
+        printf("State sau SubBytes:\n");
+        in_state(state);
+
+        shift_rows(state);
+        printf("State sau ShiftRows:\n");
+        in_state(state);
+
+        if (round < 10) {
+            mix_columns(state);
+            printf("State sau MixColumns:\n");
+            in_state(state);
+        }
+
+        add_round_key(state, keys[round]);
+        printf("State sau AddRoundKey:\n");
+        in_state(state);
+    }
+
+    printf("\nBan ma C: ");
+    for (int i = 0; i < 16; i++) {
+        printf("%02X", state[i]);
+    }
     printf("\n");
-}
+
     return 0;
-    
 }
