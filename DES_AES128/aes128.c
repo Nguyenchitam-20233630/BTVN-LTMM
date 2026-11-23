@@ -106,6 +106,32 @@ for (int r = 0; r < 4; r++) {
     }
     printf("\n");
 }
+for (int c = 0; c < 4; c++) {
+    uint8_t a0 = state[4 * c];
+    uint8_t a1 = state[4 * c + 1];
+    uint8_t a2 = state[4 * c + 2];
+    uint8_t a3 = state[4 * c + 3];
+
+    state[4 * c] =
+        nhan_gf2_8(a0, 0x02) ^ nhan_gf2_8(a1, 0x03) ^ a2 ^ a3;
+
+    state[4 * c + 1] =
+        a0 ^ nhan_gf2_8(a1, 0x02) ^ nhan_gf2_8(a2, 0x03) ^ a3;
+
+    state[4 * c + 2] =
+        a0 ^ a1 ^ nhan_gf2_8(a2, 0x02) ^ nhan_gf2_8(a3, 0x03);
+
+    state[4 * c + 3] =
+        nhan_gf2_8(a0, 0x03) ^ a1 ^ a2 ^ nhan_gf2_8(a3, 0x02);
+}
+printf("State sau MixColumns vong 1:\n");
+
+for (int r = 0; r < 4; r++) {
+    for (int c = 0; c < 4; c++) {
+        printf("%02X ", state[4 * c + r]);
+    }
+    printf("\n");
+}
 printf("63 nhan 02 = %02X\n", nhan_gf2_8(0x63, 0x02));
 printf("82 nhan 02 = %02X\n", nhan_gf2_8(0x82, 0x02));
 printf("63 nhan 03 = %02X\n", nhan_gf2_8(0x63, 0x03));

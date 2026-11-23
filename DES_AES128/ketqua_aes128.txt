@@ -20,6 +20,11 @@ State sau ShiftRows vong 1:
 63 63 63 63 
 63 82 63 63 
 82 63 63 63 
+State sau MixColumns vong 1:
+82 82 63 63 
+82 5B 63 63 
+5B BA 63 63 
+BA 82 63 63 
 63 nhan 02 = C6
 82 nhan 02 = 1F
 63 nhan 03 = A5
