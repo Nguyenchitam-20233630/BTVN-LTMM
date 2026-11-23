@@ -32,3 +32,8 @@ Word sau RotWord: 00 00 00 00
 Word sau SubWord: 63 63 63 63 
 Word sau XOR Rcon vong 1: 62 63 63 63 
 Khoa vong 1: 62636363626363636263636362636363
+State sau AddRoundKey vong 1:
+E0 E0 01 01 
+E1 38 00 00 
+38 D9 00 00 
+D9 E1 00 00 

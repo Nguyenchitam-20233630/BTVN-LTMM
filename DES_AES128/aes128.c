@@ -177,6 +177,17 @@ for (int i = 0; i < 16; i++) {
     printf("%02X", key1[i]);
 }
 printf("\n");
+for (int i = 0; i < 16; i++) {
+    state[i] = state[i] ^ key1[i];
+}
+printf("State sau AddRoundKey vong 1:\n");
+
+for (int r = 0; r < 4; r++) {
+    for (int c = 0; c < 4; c++) {
+        printf("%02X ", state[4 * c + r]);
+    }
+    printf("\n");
+}
     return 0;
     
 }
