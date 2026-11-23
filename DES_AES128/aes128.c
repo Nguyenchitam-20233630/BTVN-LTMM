@@ -156,6 +156,13 @@ for (int i = 0; i < 4; i++) {
     printf("%02X ", word[i]);
 }
 printf("\n");
+word[0] = word[0] ^ 0x01;
+
+printf("Word sau XOR Rcon vong 1: ");
+for (int i = 0; i < 4; i++) {
+    printf("%02X ", word[i]);
+}
+printf("\n");
     return 0;
     
 }
