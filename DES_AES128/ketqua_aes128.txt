@@ -10,3 +10,8 @@ State sau AddRoundKey ban dau:
 00 00 00 00 
 00 00 00 11 
 00 00 00 11 
+State sau SubBytes vong 1:
+63 63 63 63 
+63 63 63 63 
+63 63 63 82 
+63 63 63 82 
