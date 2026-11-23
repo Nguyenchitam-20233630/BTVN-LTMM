@@ -44,6 +44,21 @@ void sub_bytes(uint8_t state[16])
         state[i] = sbox[state[i]];
     }
 }
+void shift_rows(uint8_t state[16])
+{
+    uint8_t temp[16];
+
+    for (int i = 0; i < 16; i++) {
+        temp[i] = state[i];
+    }
+
+    for (int r = 0; r < 4; r++) {
+        for (int c = 0; c < 4; c++) {
+            state[4 * c + r] =
+                temp[4 * ((c + r) % 4) + r];
+        }
+    }
+}
 int main(void){
     uint8_t p[16] = {0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x11, 0x11};
     uint8_t k[16] = {0};
