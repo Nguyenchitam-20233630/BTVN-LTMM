@@ -38,6 +38,31 @@ uint8_t nhan_gf2_8(int a, int b)
 
     return (uint8_t)ket_qua;
 }
+void mix_columns(uint8_t state[16])
+{
+    for (int c = 0; c < 4; c++) {
+        uint8_t a0 = state[4 * c];
+        uint8_t a1 = state[4 * c + 1];
+        uint8_t a2 = state[4 * c + 2];
+        uint8_t a3 = state[4 * c + 3];
+
+        state[4 * c] =
+            nhan_gf2_8(a0, 0x02) ^
+            nhan_gf2_8(a1, 0x03) ^ a2 ^ a3;
+
+        state[4 * c + 1] =
+            a0 ^ nhan_gf2_8(a1, 0x02) ^
+            nhan_gf2_8(a2, 0x03) ^ a3;
+
+        state[4 * c + 2] =
+            a0 ^ a1 ^ nhan_gf2_8(a2, 0x02) ^
+            nhan_gf2_8(a3, 0x03);
+
+        state[4 * c + 3] =
+            nhan_gf2_8(a0, 0x03) ^ a1 ^ a2 ^
+            nhan_gf2_8(a3, 0x02);
+    }
+}
 void sub_bytes(uint8_t state[16])
 {
     for (int i = 0; i < 16; i++) {
