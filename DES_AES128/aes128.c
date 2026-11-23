@@ -68,6 +68,25 @@ for (int r = 0; r < 4; r++) {
     }
     printf("\n");
 }
+uint8_t temp[16];
+
+for (int i = 0; i < 16; i++) {
+    temp[i] = state[i];
+}
+
+for (int r = 0; r < 4; r++) {
+    for (int c = 0; c < 4; c++) {
+        state[4 * c + r] = temp[4 * ((c + r) % 4) + r];
+    }
+}
+printf("State sau ShiftRows vong 1:\n");
+
+for (int r = 0; r < 4; r++) {
+    for (int c = 0; c < 4; c++) {
+        printf("%02X ", state[4 * c + r]);
+    }
+    printf("\n");
+}
     return 0;
     
 }
