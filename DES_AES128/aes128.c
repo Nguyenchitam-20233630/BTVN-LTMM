@@ -38,6 +38,41 @@ uint8_t nhan_gf2_8(int a, int b)
 
     return (uint8_t)ket_qua;
 }
+void sinh_khoa(const uint8_t k[16], uint8_t keys[11][16])
+{
+    uint8_t rcon = 0x01;
+
+    for (int i = 0; i < 16; i++) {
+        keys[0][i] = k[i];
+    }
+
+    for (int round = 1; round <= 10; round++) {
+        uint8_t word[4];
+
+        word[0] = keys[round - 1][13];
+        word[1] = keys[round - 1][14];
+        word[2] = keys[round - 1][15];
+        word[3] = keys[round - 1][12];
+
+        for (int i = 0; i < 4; i++) {
+            word[i] = sbox[word[i]];
+        }
+
+        word[0] = word[0] ^ rcon;
+
+        for (int i = 0; i < 4; i++) {
+            keys[round][i] =
+                keys[round - 1][i] ^ word[i];
+        }
+
+        for (int i = 4; i < 16; i++) {
+            keys[round][i] =
+                keys[round - 1][i] ^ keys[round][i - 4];
+        }
+
+        rcon = nhan_gf2_8(rcon, 0x02);
+    }
+}
 void mix_columns(uint8_t state[16])
 {
     for (int c = 0; c < 4; c++) {
@@ -238,6 +273,19 @@ for (int r = 0; r < 4; r++) {
     for (int c = 0; c < 4; c++) {
         printf("%02X ", state[4 * c + r]);
     }
+    printf("\n");
+}
+uint8_t keys[11][16];
+
+sinh_khoa(k, keys);
+
+for (int round = 0; round <= 10; round++) {
+    printf("Khoa vong %d: ", round);
+
+    for (int i = 0; i < 16; i++) {
+        printf("%02X", keys[round][i]);
+    }
+
     printf("\n");
 }
     return 0;
