@@ -185,6 +185,33 @@ uint32_t dich_vong_trai28(uint32_t x, int so_bit)
 
     return x;
 }
+static const int PC2[48] = {
+    14, 17, 11, 24,  1,  5,
+     3, 28, 15,  6, 21, 10,
+    23, 19, 12,  4, 26,  8,
+    16,  7, 27, 20, 13,  2,
+    41, 52, 31, 37, 47, 55,
+    30, 40, 51, 45, 33, 48,
+    44, 49, 39, 56, 34, 53,
+    46, 42, 50, 36, 29, 32
+};
+
+static const int SO_DICH[16] = {
+    1, 1, 2, 2, 2, 2, 2, 2,
+    1, 2, 2, 2, 2, 2, 2, 1
+};
+uint64_t hoan_vi_pc2(uint64_t input)
+{
+    uint64_t ket_qua = 0;
+
+    for (int i = 0; i < 48; i++) {
+        uint64_t bit = (input >> (56 - PC2[i])) & 1;
+
+        ket_qua = (ket_qua << 1) | bit;
+    }
+
+    return ket_qua;
+}
 int main(void)
 {
     printf("Bang hoan vi IP:\n");
@@ -284,5 +311,14 @@ uint32_t D1 = dich_vong_trai28(D0, 1);
 
 printf("C1: %07" PRIX32 "\n", C1);
 printf("D1: %07" PRIX32 "\n", D1);
+uint64_t keys_des[16];
+
+sinh_khoa_des(khoa_thu_pc1, keys_des);
+
+printf("\n16 khoa con tu khoa thu:\n");
+
+for (int i = 0; i < 16; i++) {
+    printf("K%02d: %012" PRIX64 "\n", i + 1, keys_des[i]);
+}
     return 0;
 }
