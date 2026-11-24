@@ -173,6 +173,18 @@ uint64_t hoan_vi_pc1(uint64_t khoa)
 
     return ket_qua;
 }
+uint32_t dich_vong_trai28(uint32_t x, int so_bit)
+{
+    for (int i = 0; i < so_bit; i++) {
+        uint32_t bit_dau = (x >> 27) & 1;
+
+        x = (x << 1) & 0x0FFFFFFF;
+
+        x = x | bit_dau;
+    }
+
+    return x;
+}
 int main(void)
 {
     printf("Bang hoan vi IP:\n");
@@ -267,5 +279,10 @@ printf("Khoa thu PC1: %016" PRIX64 "\n", khoa_thu_pc1);
 printf("Sau PC1:      %014" PRIX64 "\n", khoa56);
 printf("C0: %07" PRIX32 "\n", C0);
 printf("D0: %07" PRIX32 "\n", D0);
+uint32_t C1 = dich_vong_trai28(C0, 1);
+uint32_t D1 = dich_vong_trai28(D0, 1);
+
+printf("C1: %07" PRIX32 "\n", C1);
+printf("D1: %07" PRIX32 "\n", D1);
     return 0;
 }
