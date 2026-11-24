@@ -12,7 +12,18 @@ static const int IP[64] = {
     61, 53, 45, 37, 29, 21, 13, 5,
     63, 55, 47, 39, 31, 23, 15, 7
 };
+uint64_t hoan_vi_ip(uint64_t input)
+{
+    uint64_t output = 0;
 
+    for (int i = 0; i < 64; i++) {
+        uint64_t bit = (input >> (64 - IP[i])) & UINT64_C(1);
+
+        output = (output << 1) | bit;
+    }
+
+    return output;
+}
 int main(void)
 {
     printf("Bang hoan vi IP:\n");
@@ -24,6 +35,10 @@ int main(void)
             printf("\n");
         }
     }
+uint64_t input_thu = UINT64_C(1) << 6;
+uint64_t output_thu = hoan_vi_ip(input_thu);
 
+printf("Dau vao thu: %016" PRIX64 "\n", input_thu);
+printf("Sau IP:      %016" PRIX64 "\n", output_thu);
     return 0;
 }
