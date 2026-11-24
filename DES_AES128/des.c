@@ -151,6 +151,28 @@ uint32_t ham_f(uint32_t R, uint64_t khoa_con)
 
     return ket_qua;
 }
+static const int PC1[56] = {
+    57, 49, 41, 33, 25, 17,  9,
+     1, 58, 50, 42, 34, 26, 18,
+    10,  2, 59, 51, 43, 35, 27,
+    19, 11,  3, 60, 52, 44, 36,
+    63, 55, 47, 39, 31, 23, 15,
+     7, 62, 54, 46, 38, 30, 22,
+    14,  6, 61, 53, 45, 37, 29,
+    21, 13,  5, 28, 20, 12,  4
+};
+uint64_t hoan_vi_pc1(uint64_t khoa)
+{
+    uint64_t ket_qua = 0;
+
+    for (int i = 0; i < 56; i++) {
+        uint64_t bit = (khoa >> (64 - PC1[i])) & 1;
+
+        ket_qua = (ket_qua << 1) | bit;
+    }
+
+    return ket_qua;
+}
 int main(void)
 {
     printf("Bang hoan vi IP:\n");
@@ -235,5 +257,15 @@ uint32_t R1 = L0 ^ F;
 printf("Ket qua ham F: %08" PRIX32 "\n", F);
 printf("L1: %08" PRIX32 "\n", L1);
 printf("R1: %08" PRIX32 "\n", R1);
+uint64_t khoa_thu_pc1 = UINT64_C(1) << 7;
+uint64_t khoa56 = hoan_vi_pc1(khoa_thu_pc1);
+
+uint32_t C0 = (uint32_t)(khoa56 >> 28);
+uint32_t D0 = (uint32_t)(khoa56 & 0x0FFFFFFF);
+
+printf("Khoa thu PC1: %016" PRIX64 "\n", khoa_thu_pc1);
+printf("Sau PC1:      %014" PRIX64 "\n", khoa56);
+printf("C0: %07" PRIX32 "\n", C0);
+printf("D0: %07" PRIX32 "\n", D0);
     return 0;
 }
