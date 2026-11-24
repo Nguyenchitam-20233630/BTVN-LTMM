@@ -212,6 +212,84 @@ uint64_t hoan_vi_pc2(uint64_t input)
 
     return ket_qua;
 }
+static const int IP_NGUOC[64] = {
+    40, 8, 48, 16, 56, 24, 64, 32,
+    39, 7, 47, 15, 55, 23, 63, 31,
+    38, 6, 46, 14, 54, 22, 62, 30,
+    37, 5, 45, 13, 53, 21, 61, 29,
+    36, 4, 44, 12, 52, 20, 60, 28,
+    35, 3, 43, 11, 51, 19, 59, 27,
+    34, 2, 42, 10, 50, 18, 58, 26,
+    33, 1, 41,  9, 49, 17, 57, 25
+};
+uint64_t hoan_vi_cuoi(uint64_t input)
+{
+    uint64_t output = 0;
+
+    for (int i = 0; i < 64; i++) {
+        uint64_t bit =
+            (input >> (64 - IP_NGUOC[i])) & 1;
+
+        output = (output << 1) | bit;
+    }
+
+    return output;
+}
+uint64_t ma_hoa_des(uint64_t ban_ro, uint64_t khoa)
+{
+    uint64_t keys[16];
+    sinh_khoa_des(khoa, keys);
+
+    uint64_t sau_ip = hoan_vi_ip(ban_ro);
+
+    uint32_t L = (uint32_t)(sau_ip >> 32);
+    uint32_t R = (uint32_t)(sau_ip & UINT64_C(0xFFFFFFFF));
+
+    printf("\nBat dau ma hoa DES:\n");
+    printf("P:  %016" PRIX64 "\n", ban_ro);
+    printf("K:  %016" PRIX64 "\n", khoa);
+    printf("IP: %016" PRIX64 "\n", sau_ip);
+    printf("L0: %08" PRIX32 "\n", L);
+    printf("R0: %08" PRIX32 "\n", R);
+
+    for (int i = 0; i < 16; i++) {
+        uint32_t F = ham_f(R, keys[i]);
+
+        uint32_t L_moi = R;
+        uint32_t R_moi = L ^ F;
+
+        printf("\nVong %d:\n", i + 1);
+        printf("K: %012" PRIX64 "\n", keys[i]);
+        printf("F: %08" PRIX32 "\n", F);
+        printf("L: %08" PRIX32 "\n", L_moi);
+        printf("R: %08" PRIX32 "\n", R_moi);
+
+        L = L_moi;
+        R = R_moi;
+    }
+
+    uint64_t ghep = ((uint64_t)R << 32) | L;
+
+    printf("\nR16 ghep L16: %016" PRIX64 "\n", ghep);
+
+    return hoan_vi_cuoi(ghep);
+}
+void sinh_khoa_des(uint64_t khoa, uint64_t keys[16])
+{
+    uint64_t khoa56 = hoan_vi_pc1(khoa);
+
+    uint32_t C = (uint32_t)(khoa56 >> 28);
+    uint32_t D = (uint32_t)(khoa56 & 0x0FFFFFFF);
+
+    for (int i = 0; i < 16; i++) {
+        C = dich_vong_trai28(C, SO_DICH[i]);
+        D = dich_vong_trai28(D, SO_DICH[i]);
+
+        uint64_t ghep = ((uint64_t)C << 28) | D;
+
+        keys[i] = hoan_vi_pc2(ghep);
+    }
+}
 int main(void)
 {
     printf("Bang hoan vi IP:\n");
@@ -234,7 +312,7 @@ uint32_t R0 = (uint32_t)(output_thu & UINT64_C(0xFFFFFFFF));
 
 printf("L0: %08" PRIX32 "\n", L0);
 printf("R0: %08" PRIX32 "\n", R0);
-
+sinh_khoa_des(khoa_thu_pc1, keys_des);
 uint64_t ER0 = mo_rong_e(R0);
 printf("E(R0): %012" PRIX64 "\n", ER0);
 
@@ -308,9 +386,24 @@ printf("C0: %07" PRIX32 "\n", C0);
 printf("D0: %07" PRIX32 "\n", D0);
 uint32_t C1 = dich_vong_trai28(C0, 1);
 uint32_t D1 = dich_vong_trai28(D0, 1);
-
+uint64_t keys_des[16];
 printf("C1: %07" PRIX32 "\n", C1);
 printf("D1: %07" PRIX32 "\n", D1);
+
+sinh_khoa_des(khoa_thu_pc1, keys_des);
+
+printf("\n16 khoa con tu khoa thu:\n");
+
+for (int i = 0; i < 16; i++) {
+    printf("K%02d: %012" PRIX64 "\n", i + 1, keys_des[i]);
+}
+uint64_t ban_ma_thu =
+    ma_hoa_des(input_thu, khoa_thu_pc1);
+
+printf("Ban ma thu: %016" PRIX64 "\n", ban_ma_thu);
+{
+   
+}
 uint64_t keys_des[16];
 
 sinh_khoa_des(khoa_thu_pc1, keys_des);
