@@ -40,5 +40,11 @@ uint64_t output_thu = hoan_vi_ip(input_thu);
 
 printf("Dau vao thu: %016" PRIX64 "\n", input_thu);
 printf("Sau IP:      %016" PRIX64 "\n", output_thu);
+
+uint32_t L0 = (uint32_t)(output_thu >> 32);
+uint32_t R0 = (uint32_t)(output_thu & UINT64_C(0xFFFFFFFF));
+
+printf("L0: %08" PRIX32 "\n", L0);
+printf("R0: %08" PRIX32 "\n", R0);
     return 0;
 }
