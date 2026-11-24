@@ -35,3 +35,6 @@ S7: hang = 0, cot = 0, dau ra = 4
 S8: hang = 0, cot = 0, dau ra = D
 Sau 8 S-box: 3FA72C4D
 Sau hoan vi P: D8585BBE
+Ket qua ham F: D0D8DB9C
+L1: 00000000
+R1: 50D8DB9C

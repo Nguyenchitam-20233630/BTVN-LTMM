@@ -126,6 +126,31 @@ uint32_t hoan_vi_p(uint32_t input)
 
     return output;
 }
+uint32_t ham_f(uint32_t R, uint64_t khoa_con)
+{
+    uint64_t x = mo_rong_e(R);
+    x = x ^ khoa_con;
+
+    uint32_t ket_qua = 0;
+
+    for (int i = 0; i < 8; i++) {
+        int nhom = (int)((x >> (42 - 6 * i)) & 63);
+
+        int bit_dau = nhom >> 5;
+        int bit_cuoi = nhom & 1;
+
+        int hang = bit_dau * 2 + bit_cuoi;
+        int cot = (nhom >> 1) & 15;
+
+        int gia_tri = SBOX[i][hang][cot];
+
+        ket_qua = (ket_qua << 4) | gia_tri;
+    }
+
+    ket_qua = hoan_vi_p(ket_qua);
+
+    return ket_qua;
+}
 int main(void)
 {
     printf("Bang hoan vi IP:\n");
@@ -202,5 +227,13 @@ printf("Sau 8 S-box: %08" PRIX32 "\n", sau_sbox);
 uint32_t sau_p = hoan_vi_p(sau_sbox);
 
 printf("Sau hoan vi P: %08" PRIX32 "\n", sau_p);
+uint32_t F = ham_f(R0, khoa_con_thu);
+
+uint32_t L1 = R0;
+uint32_t R1 = L0 ^ F;
+
+printf("Ket qua ham F: %08" PRIX32 "\n", F);
+printf("L1: %08" PRIX32 "\n", L1);
+printf("R1: %08" PRIX32 "\n", R1);
     return 0;
 }
