@@ -85,5 +85,19 @@ uint64_t sau_xor = e_thu ^ khoa_con_thu;
 printf("E thu:        %012" PRIX64 "\n", e_thu);
 printf("Khoa con thu: %012" PRIX64 "\n", khoa_con_thu);
 printf("Sau XOR:      %012" PRIX64 "\n", sau_xor);
+
+uint8_t nhom[8];
+
+for (int i = 0; i < 8; i++) {
+    nhom[i] = (uint8_t)((sau_xor >> (42 - 6 * i)) & 0x3F);
+
+    printf("Nhom S%d: ", i + 1);
+
+    for (int j = 5; j >= 0; j--) {
+        printf("%u", (unsigned)((nhom[i] >> j) & 1));
+    }
+
+    printf("\n");
+}
     return 0;
 }
