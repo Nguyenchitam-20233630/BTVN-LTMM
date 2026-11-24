@@ -106,6 +106,26 @@ static const uint8_t SBOX[8][4][16] = {
         {2,1,14,7,4,10,8,13,15,12,9,0,3,5,6,11}
     }
 };
+static const int P[32] = {
+    16,  7, 20, 21, 29, 12, 28, 17,
+     1, 15, 23, 26,  5, 18, 31, 10,
+     2,  8, 24, 14, 32, 27,  3,  9,
+    19, 13, 30,  6, 22, 11,  4, 25
+};
+
+uint32_t hoan_vi_p(uint32_t input)
+{
+    uint32_t output = 0;
+
+    for (int i = 0; i < 32; i++) {
+        uint32_t bit =
+            (input >> (32 - P[i])) & UINT32_C(1);
+
+        output = (output << 1) | bit;
+    }
+
+    return output;
+}
 int main(void)
 {
     printf("Bang hoan vi IP:\n");
@@ -179,5 +199,8 @@ for (int i = 0; i < 8; i++) {
 }
 
 printf("Sau 8 S-box: %08" PRIX32 "\n", sau_sbox);
+uint32_t sau_p = hoan_vi_p(sau_sbox);
+
+printf("Sau hoan vi P: %08" PRIX32 "\n", sau_p);
     return 0;
 }
