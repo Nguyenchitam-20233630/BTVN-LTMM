@@ -99,5 +99,15 @@ for (int i = 0; i < 8; i++) {
 
     printf("\n");
 }
+for (int i = 0; i < 8; i++) {
+    uint8_t hang =
+        (uint8_t)(((nhom[i] >> 4) & 0x02) | (nhom[i] & 0x01));
+
+    uint8_t cot =
+        (uint8_t)((nhom[i] >> 1) & 0x0F);
+
+    printf("S%d: hang = %u, cot = %u\n",
+           i + 1, (unsigned)hang, (unsigned)cot);
+}
     return 0;
 }
