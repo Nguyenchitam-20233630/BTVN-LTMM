@@ -2,13 +2,28 @@
 #include <stdint.h>
 #include <inttypes.h>
 
+static const int IP[64] = {
+    58, 50, 42, 34, 26, 18, 10, 2,
+    60, 52, 44, 36, 28, 20, 12, 4,
+    62, 54, 46, 38, 30, 22, 14, 6,
+    64, 56, 48, 40, 32, 24, 16, 8,
+    57, 49, 41, 33, 25, 17, 9, 1,
+    59, 51, 43, 35, 27, 19, 11, 3,
+    61, 53, 45, 37, 29, 21, 13, 5,
+    63, 55, 47, 39, 31, 23, 15, 7
+};
+
 int main(void)
 {
-    uint64_t p = UINT64_C(0x0123456789ABCDEF);
-    uint64_t k = UINT64_C(0x133457799BBCDFF1);
+    printf("Bang hoan vi IP:\n");
 
-    printf("Ban ro P: %016" PRIX64 "\n", p);
-    printf("Khoa K:   %016" PRIX64 "\n", k);
+    for (int i = 0; i < 64; i++) {
+        printf("%2d ", IP[i]);
+
+        if ((i + 1) % 8 == 0) {
+            printf("\n");
+        }
+    }
 
     return 0;
 }
