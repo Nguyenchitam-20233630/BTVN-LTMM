@@ -25,11 +25,12 @@ Nhom S5: 000000
 Nhom S6: 000000
 Nhom S7: 000000
 Nhom S8: 000000
-S1: hang = 0, cot = 8
-S2: hang = 0, cot = 0
-S3: hang = 0, cot = 0
-S4: hang = 0, cot = 0
-S5: hang = 0, cot = 0
-S6: hang = 0, cot = 0
-S7: hang = 0, cot = 0
-S8: hang = 0, cot = 0
+S1: hang = 0, cot = 8, dau ra = 3
+S2: hang = 0, cot = 0, dau ra = F
+S3: hang = 0, cot = 0, dau ra = A
+S4: hang = 0, cot = 0, dau ra = 7
+S5: hang = 0, cot = 0, dau ra = 2
+S6: hang = 0, cot = 0, dau ra = C
+S7: hang = 0, cot = 0, dau ra = 4
+S8: hang = 0, cot = 0, dau ra = D
+Sau 8 S-box: 3FA72C4D
