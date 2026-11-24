@@ -78,5 +78,12 @@ uint32_t r_thu = UINT32_C(0x80000000);
 printf("R thu:    %08" PRIX32 "\n", r_thu);
 printf("E(R thu): %012" PRIX64 "\n", mo_rong_e(r_thu));
 
+uint64_t khoa_con_thu = UINT64_C(0x000000000001);
+uint64_t e_thu = mo_rong_e(r_thu);
+uint64_t sau_xor = e_thu ^ khoa_con_thu;
+
+printf("E thu:        %012" PRIX64 "\n", e_thu);
+printf("Khoa con thu: %012" PRIX64 "\n", khoa_con_thu);
+printf("Sau XOR:      %012" PRIX64 "\n", sau_xor);
     return 0;
 }
